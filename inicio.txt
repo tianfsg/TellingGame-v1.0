@@ -1,0 +1,22 @@
+<Localizaciones>
+Garden(Comedor, Dormitorio)
+Comedor(Garden, Cocina, Dormitorio)
+Cocina(Comedor, SmokeRoom)
+Dormitorio(Comedor, Garden)
+SmokeRoom(Cocina)
+
+<Personajes>
+Esther(Dormitorio)
+Maria(Garden)
+Sebas(SmokeRoom)
+Jorge(Comedor)
+
+<Objetos>
+Joint(Sebas)
+Llave(Cocina)
+Ordenador(Comedor)
+Cartera(Garden)
+Pan(Jorge)
+
+<Jugador>
+Jorge(Comedor)
