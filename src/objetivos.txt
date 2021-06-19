@@ -1,0 +1,13 @@
+
+<Localizacion Personajes>
+Esther(Dormitorio)
+Maria(Garden)
+Jorge(Garden)
+Sebas(SmokeRoom)
+
+<Posesion Objetos>
+Joint(Maria)
+Llave(Jorge)
+Ordenador(Esther)
+Cartera(Garden)
+Pan(Sebas)
