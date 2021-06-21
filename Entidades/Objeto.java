@@ -3,19 +3,19 @@ package Entidades;
 public class Objeto {
 	
 	private String oName;
-	private Personaje Personaje;
-	private Room Room;
+	private Personaje jugador;
+	private Room room;
 
-	public Objeto(String name, Personaje personaje) {
+	public Objeto(String name, Personaje jugador) {
 		setName(name);
-		setPersonaje(personaje);
-		this.Room = null;
+		setPersonaje(jugador);
+		this.room = null;
 	}
 	
 	public Objeto(String name, Room room) {
 		setName(name);
 		setRoom(room);
-		this.Personaje = null;
+		this.jugador = null;
 	}
 	
 	//Default getters
@@ -24,14 +24,14 @@ public class Objeto {
 	}
 
 	public Room getRoom() {
-		if(Room != null) {
-			return Room;
+		if(room != null) {
+			return room;
 		}else {return null;}
 	}
 	
 	public Personaje getPersonaje() {
-		if(Personaje != null) {
-			return Personaje;
+		if(jugador != null) {
+			return jugador;
 		}else {return null;}
 	}
 	
@@ -41,21 +41,55 @@ public class Objeto {
 	}
 	
 	public void setPersonaje(Personaje personaje) {
-		if(Room != null) {
-			this.Room.removeObj(this);
-			this.Room = null;
+		
+		if(hasRoom()) {
+			this.room.removeObj(this);
+			removeRoom();
 		}
-		this.Personaje = personaje;
-		this.Personaje.setObj(this);
+		
+		if(hasPers()) {
+			
+			jugador.removeObj();
+			removePersonaje();
+			setPersonaje(personaje);
+			
+		}else {
+
+			this.jugador = personaje;
+			this.jugador.setObj(this);
+		}
+		
+		
 	}
 	
 	public void setRoom(Room room) {
-		if(Personaje != null) {
-			this.Personaje.removeObj();
-			this.Personaje = null;	
+		
+		if(hasPers()) {
+			this.jugador.removeObj();
+			removePersonaje();
 		}
-		this.Room = room;
-		this.Room.addObj(this);
+		this.room = room;
+		this.room.addObj(this);
+		
+//		try {System.out.println("PERS:" + Personaje.getName());}catch(Exception e) {System.out.println("ROOM:" + Room.getName());}
+		
+	}
+
+	public boolean hasPers() {
+		return jugador != null ? true : false;
 	}
 	
+	public boolean hasRoom() {
+		return room != null ? true : false;
+	}
+	
+	public void removeRoom() {
+		room = null;
+	}
+	
+	public void removePersonaje() {
+		jugador = null;
+	}
+		
 }
+

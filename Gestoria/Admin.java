@@ -7,156 +7,230 @@ import Entidades.*;
 public abstract class Admin {
 
 	Scanner input = new Scanner(System.in);
-
+	protected static ArrayList<Object> log = null;
+	
+	public Admin() {
+		if(log == null) {
+			log = new ArrayList<Object>();
+		}
+	}
+	
+	
     public abstract void Start();
     
     //Basic algorithm methods  
-    public int showOptions(Personaje Jugador) {
+    public int showOptions(Personaje jugador) {
         
-        if(!Jugador.getIA()) {//-------------- MECANISMO PLAYER.
-            
-            if(Jugador.hasObj()) {//Tiene objeto equipado
-                
-                if(Jugador.getRoom().Personajes().size() > 1){//Hay mas Personajes que el Jugador que esta de turno.
-                    System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                    System.out.println("1. Moverse  2. Soltar Objeto  3. Preguntar 4. Dar/Pedir Objeto 5. Nada\n");
-                    return 1;
-                    
-                }else{//Esta solo en la habitacion.
-                    System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                    System.out.println("1. Moverse  2. Soltar Objeto 3. Nada\n");
-                    return 2;
-                }
-                
+        if(!jugador.getIA()) {//-------------- MECANISMO PLAYER.
+       
+        	mostrarEntorno(jugador);
+        	
+            if(jugador.hasObj()) {//Tiene objeto equipado
+                if(!jugador.getRoom().Objetos().isEmpty()) {//Hay mas Objetos en la Habitacion.
+            		
+            		if(jugador.getRoom().Personajes().size() > 1) {//Hay mas Personajes en la Habitacion.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+            			System.out.println("1. Moverse  2. Soltar/Tomar Objeto 3. Dar 4. Nada");
+            			return 1;
+            		}else {//Solo y hay Objetos.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+                      	System.out.println("1. Moverse  2. Soltar/Tomar Objeto 3. Nada");
+                      	return 2;
+            		}
+            	}else {//No hay Objetos en la Habitacion. -- tiene objeto.
+            		
+               		if(jugador.getRoom().Personajes().size() > 1) {//Hay mas Personajes en la Habitacion.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+            			System.out.println("1. Moverse  2. Soltar Objeto 3. Dar 4. Nada");
+            			return 3;
+            		}else {//Solo y no hay Objetos.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+            			System.out.println("1. Moverse  2. Soltar Objeto 3. Nada");
+            			return 4;
+            		}
+            	}
+ 
             } else {//No tiene objeto
-             
-                if(Jugador.getRoom().Objetos().size() > 0 ) {//Hay Objeto en la sala.
-                    
-                	if(Jugador.getRoom().Personajes().size() > 1) {//Hay Personaje en la sala.
-                        System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                        System.out.println("1. Moverse  2. Tomar Objeto  3. Preguntar 4. Dar/Pedir Objeto 5. Nada\n");
-                        return 3;
-                        
-                    }else{//Esta solo en la sala.
-                        System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                        System.out.println("1. Moverse  2. Tomar Objeto 3. Nada\n");
-                        return 4;
-                    }
-                    
-                }else {//No hay Objeto en la sala.
-                    
-                	if(Jugador.getRoom().Personajes().size() > 1) {//Hay mas Personajes en la sala.
-                        System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                        System.out.println("1. Moverse  2. Preguntar 3. Dar/Pedir Objeto 4. Nada\n");
-                        return 5;
-                   
-                	}else{//Esta solo en la sala.
-                    	System.out.println(Jugador.getName() + " que accion deseas realizar?\n");
-                        System.out.println("1. Moverse 2. Nada\n");
-                        return 6;
-                    }
-                }
+             	
+            	if(!jugador.getRoom().Objetos().isEmpty()) {//Hay Objetos en la Habitacion.
+            		
+            		if(jugador.getRoom().Personajes().size() > 1) {//Hay Personajes en la Habitacion.
+            			boolean demand = false;
+            			
+            			//crear mecanismo que guarde los personajes que hay y registre el cambio.
+            			
+            			
+            			for(Personaje x : jugador.getRoom().Personajes()) {
+            				if(x.hasObj()) {
+            					demand = true;
+            				}
+            			}
+            			if(demand) {
+            				System.out.println(jugador.getName() + " que accion deseas realizar?");
+                            System.out.println("1. Moverse  2. Tomar Objeto 3. Pedir Objeto 4. Nada");
+                            return 5;
+                		}else {
+                			System.out.println(jugador.getName() + " que accion deseas realizar?");
+                            System.out.println("1. Moverse  2. Tomar Objeto 3. Nada");
+                            return 6;
+                		}
+            		
+            		
+            		}else {//No hay Personajes en la Habitacion.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+                        System.out.println("1. Moverse  2. Tomar Objeto 3. Nada");
+                        return 7;
+            		}
+            		
+            	}else{//No hay objetos.
+            		
+            		if(jugador.getRoom().Personajes().size() > 1) {//Hay Personajes en la Habitacion.
+            			boolean demand = false;
+            			for(Personaje x : jugador.getRoom().Personajes()) {
+            				if(x.hasObj()) {
+            					demand = true;
+            				}
+            			}
+            			if(demand) {
+            				System.out.println(jugador.getName() + " que accion deseas realizar?");
+                            System.out.println("1. Moverse 2. Pedir Objeto 3. Nada");
+                            return 8;
+                		}else {
+                			System.out.println(jugador.getName() + " que accion deseas realizar?");
+                            System.out.println("1. Moverse 2. Nada");
+                            return 9;
+                		}
+            			
+            		}else {//No hay Personajes en la Habitacion.
+            			System.out.println(jugador.getName() + " que accion deseas realizar?");
+                        System.out.println("1. Moverse 2. Nada");
+                        return 10;
+            		}
+            	}
             }
+            
         }else {//----------------- MECANISMO IA.
         	
-            if(Jugador.hasObj()) {//Tiene objeto equipado
-                
-                if(Jugador.getRoom().Personajes().size() > 1 ) {//Hay mas Personajes que el Jugador que esta de turno.
-                    return 1;
-                }else {//Esta solo en la habitacion.
-                    return 2;
-                }
-                
+            if(jugador.hasObj()) {//Tiene objeto equipado
+            	
+            	  if(!jugador.getRoom().Objetos().isEmpty()) {//Objetos en la hab.
+            		  if(jugador.getRoom().Personajes().size() > 1) {//Personajes en la hab.
+            			  return 1;
+            		  }else {
+            			  return 2;
+            		  }
+            		  
+            	  }else{//sin Objetos en la hab.
+            		  if(jugador.getRoom().Personajes().size() > 1) {//sin Personajes en la hab.
+            			  return 3;
+            		  }else {
+            			  return 4;
+            		  }
+            	  }
+         
             }else {//No tiene objeto
                 
-                if(Jugador.getRoom().Objetos().size() > 0 ) {//Hay Objeto en la sala.
-                	
-                    if(Jugador.getRoom().Personajes().size() > 1) {//Hay Personaje en la sala.
-                        return 3;
-                    }else {//Esta solo en la sala.
-                        return 4;
-                    }
-                    
-                }else {//No hay Objeto en la sala.
-                    
-                	if(Jugador.getRoom().Personajes().size() > 1) {
-                    //Hay mas Personajes en la sala.
-                        return 5;
-                    }else {
-                    //Esta solo en la sala.
-                        return 6;
-                    }
-                }
+	            if(!jugador.getRoom().Objetos().isEmpty()) {//Objetos en la hab.
+	            	if(jugador.getRoom().Personajes().size() > 1) {//Personajes en la hab.
+	            		return 5;
+	        		}else {
+	        			return 6;
+	        		}
+	        		  
+	            }else{//sin Objetos en la hab.
+	        		
+	            	if(jugador.getRoom().Personajes().size() > 1) {//sin Personajes en la hab.
+	            		return 7;
+	            	}else {
+	            		return 8;
+	            	}
+	        	}
             }
         }
     }
     
-    public void takeOption(Personaje Jugador) {
+    public void takeOption(Personaje jugador) {
         int decision = 0;
         int rama = 0;
+    	boolean valido = false;
+
+        if(!jugador.getIA()){//Es el jugador fisico. 
         
-        if(!Jugador.getIA()){//Es el jugador fisico.         
-        	rama = showOptions(Jugador);    
-            decision = input.nextInt();         
-            doOption(Jugador, decision, rama);
+        	rama = showOptions(jugador);    
+           	decision = input.nextInt();    
+            System.out.println("DECISIONL: " + decision);
+            	
+            doOption(jugador, decision, rama);
+            attachCreencias(jugador);
         }else {
             //Es el jugador IA.
-            rama = showOptions(Jugador);
-            //si escogio una rama par, entonces solo hay 2 opciones, si le toca impar tiene siempre 3 opciones.
-            switch(rama) {
+            rama = showOptions(jugador);
+            switch(rama) {//Le disminuimos el numero de decisiones para que siempre se mantenga buscando los objetos y despues las habitaciones.
             case 1:
-            	decision = Jugador.chooseIA(4); 
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(3); 
+            	doOption(jugador, decision, rama);
                 break;
             case 2:
-            	decision = Jugador.chooseIA(3); 
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(2); 
+            	doOption(jugador, decision, rama);
             	break;
             case 3:
-            	decision = Jugador.chooseIA(5);
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(3);
+            	doOption(jugador, decision, rama);
             	break;
             case 4:
-            	decision = Jugador.chooseIA(3);
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(2);
+            	doOption(jugador, decision, rama);
             	break;
             case 5:
-            	decision = Jugador.chooseIA(3);
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(3);
+            	doOption(jugador, decision, rama);
             	break;
             case 6:
-            	decision = Jugador.chooseIA(2);
-            	doOption(Jugador, decision, rama);
+            	decision = jugador.chooseIA(2);
+            	doOption(jugador, decision, rama);
             	break;
-            default:System.err.println("Esa decision no es valida, intente de nuevo. linea 111 Admin.java\n");
+            case 7:
+            	decision = jugador.chooseIA(2);
+            	doOption(jugador, decision, rama);
+            	break;
+            case 8:
+            	decision = jugador.chooseIA(2);
+            	doOption(jugador, decision, rama);
+            	break;
+            case 9:
+            	decision = jugador.chooseIA(1);
+            	doOption(jugador, decision, rama);
+            	break;
+            case 10:
+            	decision = jugador.chooseIA(1);
+            	doOption(jugador, decision, rama);
+            	break;default:System.err.println("Esa decision no es valida, intente de nuevo. linea 204 Admin.java\n");
                 break;
             }
         }
     }
     
-    public void doOption(Personaje Jugador, int decision, int rama) {
+    public void doOption(Personaje jugador, int decision, int rama) {
+
+    	attachLog(jugador, decision, rama);
+    	
         switch(rama) {
         case 1:
             //Tiene objeto y hay mas jugadores en la sala.
             switch(decision) {
             case 1: 
                 //Moverse de habitacion. 
-            	System.out.println("MOVE :1");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2: 
-                //Soltar Objeto.
-            	System.out.println("DROP :1");
-            	drop(Jugador);
+                //Soltar/Tomar Objeto.
+            	take(jugador);
             	break;
-            case 3: 
-                //Preguntar a otro Jugador.
-            	//ask(Jugador);
+            case 3:
+            	give(jugador);
             	break;
             case 4:
-            	give(Jugador);
-            	break;
-            case 5:
                 //no hacer nada
                 break;
             default: System.err.println("ERROR: opcion no valida N161\n");
@@ -168,16 +242,17 @@ public abstract class Admin {
             switch(decision) {
             case 1:
                 //Moverse de habitacion.
-            	System.out.println("MOVE :2");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2:
-                //Soltar Objeto.
-            	System.out.println("DROP :2");
-            	drop(Jugador);
+                //Soltar/Tomar Objeto.
+            	take(jugador);
                 break;
-            case 3:System.out.println("No hiciste nada.");
-                break;
+            case 3:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
             default: System.err.println("ERROR: opcion no valida N178\n");
                 break;
             }//Fin del switch;
@@ -187,26 +262,20 @@ public abstract class Admin {
             switch(decision) {
             case 1:
                 //Moverse de habitacion.
-            	System.out.println("MOVE :3");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2:
-                //Tomar Objeto.
-            	System.out.println("TAKE : 3");
-            	take(Jugador);
+                //Soltar Objeto.
+            	drop(jugador);
             	break;
             case 3:
-                //Preguntar a otro Jugador.
-            	//ask(Jugador);
-                break;
-            case 4:
-            	System.out.println("GIVE : 3");
-            	give(Jugador);
+            	give(jugador);
             	break;
-            case 5:
-                //no hacer nada
-            	System.out.println("No hiciste nada.");
-                break;
+            case 4:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
             default: System.err.print("ERROR: opcion no valida N204\n");
                 break;
             }//Fin del switch;
@@ -216,17 +285,17 @@ public abstract class Admin {
             switch(decision) {
             case 1:
                 //Moverse de habitacion.
-            	System.out.println("MOVE :4");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2:
-                //Tomar Objeto.
-            	System.out.println("TAKE :4");
-            	take(Jugador);
+                //Soltar Objeto.
+            	drop(jugador);
             	break;
             case 3:
-            	System.out.println("No hiciste nada.");
-                break;
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
             default: System.err.print("ERROR: opcion no valida N221\n");
                 break;
             }//Fin del switch;
@@ -236,20 +305,20 @@ public abstract class Admin {
             switch(decision) {
             case 1:
                 //Moverse a otra Habitacion.
-            	System.out.println("MOVE :5");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2:
-                //Preguntar a otro Personaje.
-            	//ask(Jugador);
+                //Tomar Objeto.
+            	take(jugador);
                 break;
             case 3:
-            	System.out.println("GIVE :5");
-            	give(Jugador);
-                break;
+            	demand(jugador);
+            	break;
             case 4: 
-            	System.out.println("No hiciste nada.");
-                break;
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
             default: System.err.print("ERROR: opcion no valida N238\n");
                 break;
             }//fin de la decision de la rama 5.
@@ -259,24 +328,96 @@ public abstract class Admin {
             switch(decision) {
             case 1:
                 //Moverse a otra Habitacion.
-            	System.out.println("MOVE : 6");
-            	move(Jugador);
+            	move(jugador);
             	break;
             case 2:
-            	System.out.println("No hiciste nada.");
-                break;
+            	//Tomar Objeto.
+            	take(jugador);
+            	break;
+            case 3:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
             default: System.err.print("ERROR: opcion no valida N251\n");
                 break;
             }
             break;
-        default: System.err.print("ERROR: opcion no valida N255\n");
+        case 7:
+        	switch(decision) {
+        	case 1:
+        		//Mover a otra hab.
+        		move(jugador);
+        		break;
+        	case 2:
+        		//Tomar
+        		take(jugador);
+        		break;
+        	case 3:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
+            default: System.err.print("ERROR: opcion no valida N314\n");
+        		break;
+        	}
+        	break;
+        case 8:
+        	switch(decision) {
+        	case 1:
+        		//Mover
+        		move(jugador);
+        		break;
+        	case 2:
+        		//Pedir
+        		demand(jugador);
+        		break;
+        	case 3:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
+        	 default: System.err.print("ERROR: opcion no valida N326\n");
+              	break;
+        	}
+        	break;
+        case 9:
+        	switch(decision) {
+        	case 1:
+        		//Mover a otra hab.
+        		move(jugador);
+        		break;
+        	case 2:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
+            default: System.err.print("ERROR: opcion no valida N314\n");
+        		break;
+        	}
+        	break;
+        case 10:
+        	switch(decision) {
+        	case 1:
+        		move(jugador);
+        		break;
+        	case 2:
+            	if(!jugador.getIA()) {
+            		System.out.println("No hiciste nada.");
+             	}
+            	break;
+        	 default: System.err.print("ERROR: opcion no valida N326\n");
+              	break;
+        	}
+        	break;
+        default: System.err.print("ERROR: opcion no valida N331\n");
             break;//Fin del switch rama;
         }
     }
     
-    public void Round(Personaje Jugador) {
-    	takeOption(Jugador);
-    	Jugador.setTurno(true);
+    public void Round(Personaje jugador) {
+    	takeOption(jugador);
+    	jugador.setTurno(true);
     }
     
     public void newRound(ArrayList<Personaje> personajes) {
@@ -286,223 +427,251 @@ public abstract class Admin {
     }
     
     //AdminMethods();
-    public void move(Personaje Jugador){
+    public void move(Personaje jugador){
        
     	Room next = null;
-    	int opciones;
+    	int opciones = 0;
     	
-    	if(Jugador.getIA()) {//------------------- Mecanismo IA
+    	if(jugador.getIA()) {//------------------- Mecanismo IA
     		
-    		if(Jugador.finalObj()) {//tiene el objeto final.
+    		if(jugador.finalObj()) {//tiene el objeto final.
     			
-    			if(Jugador.getRoom().Anexos().contains(Jugador.getFinalRoom())){//Esta la habitacion final anexa a la habitacion actual.
+    			if(jugador.getRoom().Anexos().contains(jugador.getFinalRoom())){//Esta la habitacion final anexa a la habitacion actual.
     				
-    				next = Jugador.getRoom().Anexos().get(Jugador.getRoom().Anexos().indexOf(Jugador.getFinalRoom())); //Asigna la habitacion final.
-    				Jugador.setRoom(next);
+    				next = jugador.getRoom().Anexos().get(jugador.getRoom().Anexos().indexOf(jugador.getFinalRoom())); //Asigna la habitacion final.
+    				jugador.setRoom(next);
     				//Debug
-    	    		System.out.println(Jugador.getName() + " se movio a " + Jugador.getRoom().getName());
+//    	    		System.out.println(jugador.getName() + " se movio a " + jugador.getRoom().getName());
     			
-    			}else {//Se mueve aleatoriamente hasta acercarse a su habitacion final.
-    	    		
-    				opciones = Jugador.getRoom().Anexos().size();
-    	    		next = Jugador.getRoom().Anexos().get(Jugador.chooseIA(opciones)-1);
-    	    		Jugador.setRoom(next);
-    	    		//Debug
-    	    		System.out.println(Jugador.getName() + " se movio a " + Jugador.getRoom().getName());
     			}
-    		}else {//no tiene el objeto final.
     			
-    			if(Jugador.getRoom().Objetos().contains(Jugador.getFinalObj())) {//No hace nada, se queda hasta tomar el Objeto.
-    			}else {															 //No esta el objeto, entonces se mueve para buscarlo.
-    				opciones = Jugador.getRoom().Anexos().size();
-    	    		next = Jugador.getRoom().Anexos().get(Jugador.chooseIA(opciones)-1);
-    	    		Jugador.setRoom(next);
+    			if(jugador.getRoom().getName() != jugador.getFinalRoom().getName()) {//Se mueve aleatoriamente hasta acercarse a su habitacion final.
+    	    		opciones = jugador.getRoom().Anexos().size();
+    	    		next = jugador.getRoom().Anexos().get(jugador.chooseIA(opciones)-1);
+    	    		jugador.setRoom(next);
     	    		//Debug
-    	    		System.out.println(Jugador.getName() + " se movio a " + Jugador.getRoom().getName());
+//    	    		System.out.println(jugador.getName() + " se movio a " + jugador.getRoom().getName());
+    			}
+    			
+    		}else{//no tiene el objeto final.
+    			
+    			if(!jugador.getRoom().Objetos().contains(jugador.getFinalObj())) {//No esta el Objeto, intenta moverse para buscarlo.
+    			
+    				opciones = jugador.getRoom().Anexos().size();
+    	    		next = jugador.getRoom().Anexos().get(jugador.chooseIA(opciones)-1);
+    	    		jugador.setRoom(next);
+    	    		//Debug
+//    	    		System.out.println(jugador.getName() + " se movio a " + jugador.getRoom().getName());
     			}
     		}
     		
     	}else {//------------------ Mecanismo Player
 
-    		System.out.println("Ir a:\n");
+    		System.out.println("Ir a:");
     		do {
-        		Jugador.getRoom().listAnexos();
+        		jugador.getRoom().listAnexos();
     			opciones = input.nextInt()-1;
-    		}while(opciones > Jugador.getRoom().Anexos().size()-1);
+    		}while(opciones > jugador.getRoom().Anexos().size()-1);
     		
-			next = Jugador.getRoom().Anexos().get(opciones);
-    		Jugador.setRoom(next);  		
+			next = jugador.getRoom().Anexos().get(opciones);
+    		jugador.setRoom(next);  		
     	}
     	
     }
     
-    public void take(Personaje Jugador) {
+    public void take(Personaje jugador) {
     	
     	Objeto take;
     	int decision, opciones;
     	
-    	if(Jugador.getIA()){//------------- Mecanismo IA.
+    	if(jugador.getIA()){//------------- Mecanismo IA.
     		
-    		if(Jugador.getRoom().Objetos().contains(Jugador.getFinalObj())){//esta el Objeto final.
+    		if(jugador.getRoom().Objetos().contains(jugador.getFinalObj())){//esta el Objeto final.
     		
-    			take = Jugador.getRoom().Objetos().get(Jugador.getRoom().Objetos().indexOf(Jugador.getFinalObj())); //asigna el objeto final.
-    			Jugador.setObj(take);
+    			take = jugador.getRoom().Objetos().get(jugador.getRoom().Objetos().indexOf(jugador.getFinalObj())); //asigna el objeto final.
+    			take.setPersonaje(jugador);
 	    		//Debug
-	    		System.out.println(Jugador.getName() + " tomo " + Jugador.getObj().getName());
+//	    		System.out.println(jugador.getName() + " tomo " + jugador.getObj().getName());
     			
     		}else{//no esta el Objeto final.
+    			if(!jugador.getRoom().Objetos().isEmpty()) {
+	    			
+    				decision = jugador.chooseIA(2);				//Se pregunta si quiere tomar algun objeto o no.
+	    			if(decision == 1) {
+	    				opciones = jugador.getRoom().Objetos().size();
+	    				take = jugador.getRoom().Objetos().get(jugador.chooseIA(opciones)-1);
+	    				take.setPersonaje(jugador);
+	    				//Debug
+//	    	    		System.out.println(jugador.getName() + " tomo " + jugador.getObj().getName());
+	        		}
     			
-    			decision = Jugador.chooseIA(1);				//Se pregunta si quiere tomar algun objeto o no.
-    			if(decision == 1) {
-    				opciones = Jugador.getRoom().Objetos().size();
-    				take = Jugador.getRoom().Objetos().get(Jugador.chooseIA(opciones)-1);
-    				Jugador.setObj(take);
-    				//Debug
-    	    		System.out.println(Jugador.getName() + " tomo " + Jugador.getObj().getName());
-        		}
+	    			if(jugador.hasObj() && decision != 1) {
+	    				drop(jugador);
+	    			}
+    			}
     		}
     		
     	}else {//------------ Mecanismo Player.
 
-    		System.out.println("Cual quieres tomar?");
-			do {
-				Jugador.getRoom().listObj();
-        		opciones = input.nextInt()-1;
-    		}while(opciones > Jugador.getRoom().Objetos().size()-1);
-
-    		take = Jugador.getRoom().Objetos().get(opciones);
-
-	    	if(Jugador.hasObj()) {
+    		if(jugador.hasObj()) {
 	    		
-	    		System.out.println("Parece que ya tienes un objeto ("+Jugador.getObj().getName()+"), deseas tirarlo por este?  --> " + take.getName());
+	    		System.out.println("Parece que ya tienes un objeto ("+jugador.getObj().getName()+"), deseas tirarlo por otro?");
 	    		do {
 	    			System.out.println("1. Si || 2. No");
 		    		decision = input.nextInt();
 	    		}while(decision > 2);
 	    		
 	    		if(decision == 1) {
-	    			Jugador.setObj(take);
-			    	System.out.println("Has adquirido " + Jugador.getObj().getName());
+
+	        		System.out.println("Cual quieres tomar?");
+	    			do {
+	    				jugador.getRoom().listObj();
+	            		opciones = input.nextInt()-1;
+	        		}while(opciones > jugador.getRoom().Objetos().size()-1);
+
+	        		take = jugador.getRoom().Objetos().get(opciones);
+	    			
+	    			take.setPersonaje(jugador);
+	    			System.out.println("Has adquirido " + jugador.getObj().getName());
 	    		}else {
-	    			System.out.println("Decidiste no hacer nada.");
+	    			drop(jugador);
 	    		}
 	    		
 	    	}else{
-	    		Jugador.setObj(take);
-		    	System.out.println("Has adquirido " + Jugador.getObj().getName());
+	    		
+	    		System.out.println("Cual quieres tomar?");
+				do {
+					jugador.getRoom().listObj();
+	        		opciones = input.nextInt()-1;
+	    		}while(opciones > jugador.getRoom().Objetos().size()-1);
+
+	    		take = jugador.getRoom().Objetos().get(opciones);
+	    		take.setPersonaje(jugador);
+	    		System.out.println("Has adquirido " + jugador.getObj().getName());
 	    	}
 	    }
+    	
+    	for(Objeto x : jugador.getRoom().Objetos()) {
+//    		System.out.println(x.getName());
+    	}
+    	
     }
        
-    public void drop(Personaje Jugador) {
+    public void drop(Personaje jugador) {
     	
-    	if(Jugador.getIA() && Jugador.hasObj()) {//IA y tiene objeto.
-    		if(Jugador.finalObj() && Jugador.getFinalObj().getName() != Jugador.getObj().getName()) {//Si no es el Objeto final.
-    			//Debug
-    			String dropped = Jugador.getObj().getName();
-    			System.out.println("Has soltado " + dropped);	
+    	
+    	if(!jugador.getIA()) {
     		
-    			Jugador.getObj().setRoom(Jugador.getRoom());
+    		if(jugador.hasObj()) {
+				System.out.println("Has soltado " + jugador.getObj().getName());
+        		jugador.dropObj();
+        	}
+    		
+    	}else{
+    		
+    		if(jugador.getFinalObj() != null) {
+    			if(jugador.hasObj() && jugador.getFinalObj().getName() != jugador.getObj().getName()) {
+    				jugador.dropObj();
+        		}
+    			
+    		}else {
+    			if(jugador.hasObj()) {
+    				jugador.dropObj();
+    			}
     		}
-   
-    	}else if(Jugador.getIA() == false && Jugador.hasObj()){//Player y tiene objeto.
-    		String dropped = Jugador.getObj().getName();
-    		Jugador.getObj().setRoom(Jugador.getRoom());
-        	System.out.println("Has soltado " + dropped);	
     	}
     }
     
-    public void give(Personaje Jugador) {
+    public void give(Personaje jugador) {
 
     	Personaje player;
     	int rand, opciones, decision;
     	
-    	if(Jugador.getIA() && Jugador.hasObj()) {//-------- Mecanismo IA.
+    	if(jugador.getIA() && jugador.hasObj()) {//-------- Mecanismo IA.
     		
-    		if(!Jugador.finalObj()) {//no tiene el objeto final.
-    			if(Jugador.getRoom().Personajes().size() > 0) {//hay mas personajes en la room.
+    		if(!jugador.finalObj()) {//no tiene el objeto final.
+    			if(jugador.getRoom().Personajes().size() > 0) {//hay mas personajes en la room.
 
-    				opciones = Jugador.getRoom().Personajes().size();
-    				player = Jugador.getRoom().Personajes().get(Jugador.chooseIA(opciones)-1);
+    				opciones = jugador.getRoom().Personajes().size();
+    				player = jugador.getRoom().Personajes().get(jugador.chooseIA(opciones)-1);
     				
     				if(player.getIA()){//es la IA.
     				
-    					rand = (int) (Math.random() * 1) + 1;
+    					rand = (int) (Math.random() * 2) + 1;
     					if(rand == 1){
-    						Jugador.giveObj(player);
-    						System.out.println(Jugador.getName() + " le dio " + player.getObj().getName() + " a " + player.getName());
+    						jugador.giveObj(player);
+//    						System.out.println(jugador.getName() + " le dio " + player.getObj().getName() + " a " + player.getName());
     	    			}
     				
     				}else if(!player.getIA()){//es el Player.
     					
-    					System.out.println(Jugador.getName() + " quiere darte su objeto, que dices? ---> (" +Jugador.getObj().getName()+")");
+    					System.out.println(jugador.getName() + " quiere darte su objeto, que dices? ---> (" +jugador.getObj().getName()+")");
     					do {
         					System.out.println("1. Si acentuado || 2. No");
     						decision = input.nextInt();
     					}while (decision > 2);
     					
     					if(decision == 1){
-    						Jugador.giveObj(player);
+    						jugador.giveObj(player);
     					}
     				}			
     			}
     		}
     		
-    	}else if(!Jugador.getIA() && Jugador.hasObj()) {//------- Mecanismo Player.
+    	}else if(!jugador.getIA() && jugador.hasObj()) {//------- Mecanismo Player.
     		
     		System.out.println("A quien le quieres dar tu objeto?");
     		do {
-    			Jugador.getRoom().listPersonajes();
+    			jugador.getRoom().listarPreguntados(jugador);
         		opciones = input.nextInt()-1;
-    		}while(opciones > Jugador.getRoom().Personajes().size()-1);
+    		}while(opciones > jugador.getRoom().Personajes().size()-1);
     		
-    		player = Jugador.getRoom().Personajes().get(opciones);
+    		player = jugador.getRoom().Personajes().get(opciones);
 
-    		rand = (int) (Math.random() * 1) + 1;
+    		rand = (int) (Math.random() * 2) + 1;
     		if(rand == 1) {
-    			Jugador.giveObj(player);
+    			jugador.giveObj(player);
     			System.out.println("Le has dado "+ player.getObj().getName()+" a "+player.getName());
     		}else {
-    			System.out.println(player.getName() + "no quiso tu Objeto.");
+    			System.out.println(player.getName() + " no quiso tu Objeto.");
     		}
     	}
     }
 
-    public void demand(Personaje Jugador){
+    public void demand(Personaje jugador){
     	
-    	Personaje player;
-    	ArrayList<Personaje> personajes = Jugador.getRoom().Personajes();
+    	ArrayList<Personaje> personajes = jugador.getRoom().Personajes();
     	
     	int decision, rand;
     	boolean done = false;
     	
-    	if(Jugador.getIA()) {//------------ Mecanismo IA.	
-    		if(!Jugador.finalObj()) {//no tiene el Objeto Final.
+    	if(jugador.getIA()) {//------------ Mecanismo IA.	
+    		if(!jugador.finalObj()) {//no tiene el Objeto Final.
     		
-    			for(Personaje Player : personajes) {
+    			for(Personaje player : personajes) {
     				
-    				if(Player.hasObj() && !done) {
-        				if(Player.getObj().getName() == Jugador.getFinalRoom().getName()){//Tiene el Objeto Final.
-    						if(Player.getIA()) {//es la IA.
+    				if(player.hasObj() && !done) {
+        				if(player.getObj().getName() == jugador.getFinalRoom().getName()){//Tiene el Objeto Final.
+    						if(player.getIA()) {//es la IA.
     							
-        						rand = (int) (Math.random() * 1) + 1;
-        						System.out.println("Valores del rand:"+rand);
+        						rand = (int) (Math.random() * 2) + 1;
+//        						System.out.println("Valores del rand:"+rand);
         						if(rand == 1) {
-        							Player.giveObj(Jugador);
-            						System.out.println(Player.getName() + " le dio ("+Jugador.getObj().getName()+") a " + Jugador.getName());
+        							player.giveObj(jugador);
+//            						System.out.println(Player.getName() + " le dio ("+jugador.getObj().getName()+") a " + jugador.getName());
         							done = true;
         						}
         					
     						}else{//es el Player.
-        						System.out.println(Jugador.getName() + " te esta pidiendo tu objeto ("+Player.getObj().getName()+"), que dices?");
+        						System.out.println(jugador.getName() + " te esta pidiendo tu objeto ("+player.getObj().getName()+"), que dices?");
         						do {
             						System.out.println("1. Si acentuado || 2. No");
         							decision = input.nextInt();
         						}while(decision > 2);
         						
         						if(decision == 1) {
-        							Player.giveObj(Jugador);
-            						System.out.println(Player.getName() + " le diste ("+Jugador.getObj().getName()+") a " + Jugador.getName());
+        							player.giveObj(jugador);
+            						System.out.println(player.getName() + " le diste ("+jugador.getObj().getName()+") a " + jugador.getName());
         							done = true;
         						}else {
         							System.out.println("No le diste tu Objeto.");
@@ -517,17 +686,18 @@ public abstract class Admin {
     		
     		System.out.println("A quien le quieres pedir su Objeto?");
     		do {
-        		Jugador.getRoom().listPersonajes();
+        		jugador.getRoom().listarPreguntados(jugador);
     			decision = input.nextInt()-1;
-    		}while(decision > Jugador.getRoom().Personajes().size()-1);
+    		}while(decision > jugador.getRoom().Personajes().size()-1);
     		
-			player = Jugador.getRoom().Personajes().get(decision);
+        	Personaje player;
+			player = jugador.getRoom().Personajes().get(decision);
     		
     		if(player.hasObj()) {
-    			rand = (int) (Math.random() * 1) + 1;
+    			rand = (int) (Math.random() * 2) + 1;
         		if(rand == 1) {
-        			player.giveObj(Jugador);
-        			System.out.println(player.getName() + " te ha dado " + Jugador.getObj().getName());
+        			player.giveObj(jugador);
+        			System.out.println(player.getName() + " te ha dado " + jugador.getObj().getName());
         		}else {
         			System.out.println(player.getName() + " prefirio no darte su Objeto.");
         		}
@@ -538,8 +708,109 @@ public abstract class Admin {
     	}
     }
     
-    public void ask(Personaje Jugador) {
+    public void ask(Personaje jugador) {
+    	
+    	int decision;
+    	Personaje player;
+    	if(!jugador.getIA()) {//	MECANISMO PARA PLAYER
+    		
+    		//Quien quieres que te diga sus creencias?
+    		do {
+    			jugador.getRoom().listarPreguntados(jugador);
+    			decision = input.nextInt() - 1;
+    		}while(decision < 0 && decision > jugador.getRoom().Personajes().size() - 1);
+    	
+    		player = jugador.getRoom().Personajes().get(decision);
+    	
+    		switch(player.chooseIA(2)) {
+    		case 1:
+    			player.lastBelieves();
+    			break;
+    		case 2:
+    			System.out.println(player.getName() + " no quiso darte informacion.");
+    			break;
+    		}
+   
+    	}else {//	MECANISMO PARA LA IA	
+    		
+    		decision = jugador.getRoom().Personajes().size();
+    		player = jugador.getRoom().Personajes().get(jugador.chooseIA(decision)-1);
+    		
+    		if(!player.getIA()) {//Es el player
+    			
+    			do {
+	    			System.out.println(jugador.getName()+" quiere algo de informacion, deseas darle la info?");
+	    			System.out.println(" 1. SI | 2. NO");
+	    
+	    			decision = input.nextInt();
+    			}while(decision != 1 && decision != 2);
+    			
+//    			System.out.println("DECISION (ask.Admin): " + decision);
+    			switch(decision) {
+    			case 1:
+    				player.lastBelieves();
+    				break;
+    			case 2: 
+    				System.out.println("Decidiste no decir nada.");
+    				break;
+    			}
+    		}
+    	}
+    }
+    
+    
+    public void attachCreencias(Personaje jugador) {
+    	
+    	if(jugador.getRoom().Personajes().size() > 1 ) {//Hay alguien mas	
+    		for(Personaje x : jugador.getRoom().Personajes()) {
+    			if(!( x.getName().equals(jugador.getName()) )) {//Guardamos todos los personajes en sus creencias.
+    				jugador.setPBelieve(jugador.getRoom(), x);
+    			}
+    		}
+    	}
+    	
+    	if(jugador.getRoom().Objetos().size() > 0) {
+    		for(Objeto o : jugador.getRoom().Objetos()) {
+    			jugador.setOBelive(jugador.getRoom(), o);
+    		}
+    	}
     	
     }
+    
+    public void attachLog(Personaje jugador, int decision, int rama) {
+    	log.add(jugador + " decision " + decision + " rama " + rama);
+    }
 
+    public ArrayList<Object> getLog(){
+    	return log;
+    }
+    
+    public void muestraLog() {
+		for(int i = 0; i < log.size(); i++) {
+			System.out.println(log.get(i));
+		}
+    }
+    
+    public void mostrarEntorno(Personaje jugador) {
+    	
+    	Room hab = jugador.getRoom();
+    	System.out.println("ANEXOS:");
+    	hab.listAnexos();
+    	System.out.println();
+    	System.out.println("PERSONAJES:");
+    	if(hab.Personajes().size() > 1){
+    		hab.listarPreguntados(jugador);
+        	System.out.println();
+    	}else {
+    		System.out.println("No hay.\n");
+    	}
+    	System.out.println("OBJETOS:");
+    	if(hab.Objetos().size() > 0) {
+        	hab.listObj();	
+        	System.out.println();
+    	}else {
+    		System.out.println("No hay.\n");
+    	}
+    }
+    
 }

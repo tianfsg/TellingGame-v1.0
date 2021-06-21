@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InstanciarPers extends StrategyInstanciador {
+public class InstanciarPers implements StrategyInstanciador {
 
 	private String[] lineas = new String[100];
 
@@ -16,7 +16,7 @@ public class InstanciarPers extends StrategyInstanciador {
 	private String[][] personajes2D = new String[100][100];
 	private String jugador_string = new String();
 
-	private ArrayList<Room> Rooms;
+	private ArrayList<Room> rooms;
 	private Personaje[] arrPersonajes = new Personaje[100];
 
 	private ArrayList<Personaje> listPersonajes = new ArrayList<Personaje>();
@@ -30,7 +30,7 @@ public class InstanciarPers extends StrategyInstanciador {
 
 	public void setRoom(ArrayList<Room> rooms) {
 		if(rooms != null) {
-			this.Rooms = rooms;		
+			this.rooms = rooms;		
 		}
 	}
 	
@@ -151,18 +151,18 @@ public class InstanciarPers extends StrategyInstanciador {
 //		System.out.println("INSTANCIANDO PERSONAJES");
 		for(int i = 0; personajes2D[i][0] != null; i++)
 		{
-			for(int j = 0; j < Rooms.size() ; j++)
+			for(int j = 0; j < rooms.size() ; j++)
 			{
-				if(Rooms.get(j).getName().equals(personajes2D[i][1])) { //cuando los strings coinciden...
+				if(rooms.get(j).getName().equals(personajes2D[i][1])) { //cuando los strings coinciden...
 					
 					if(personajes2D[i][0].equals(jugador_string)){ // SI ES EL JUGADOR, INSTANCIA JUGADOR; SI NO, INSTANCIA IA.
 						
 //						System.out.println("JUGADOR: " + personajes2D[i][0]);
-						arrPersonajes[i] = new Player(personajes2D[i][0], Rooms.get(j)); //... pilla el objeto cuya string coincida y lo pasa al constructor de personajes.
+						arrPersonajes[i] = new Player(personajes2D[i][0], rooms.get(j)); //... pilla el objeto cuya string coincida y lo pasa al constructor de personajes.
 					}else{
 						
 //						System.out.println("IA: " + personajes2D[i][0]);
-						arrPersonajes[i] = new IA(personajes2D[i][0], Rooms.get(j)); //... pilla el objeto cuya string coincida y lo pasa al constructor de personajes.
+						arrPersonajes[i] = new IA(personajes2D[i][0], rooms.get(j)); //... pilla el objeto cuya string coincida y lo pasa al constructor de personajes.
 //						System.out.println(arrPersonajes[i].getName() + " --> " + Rooms.get(j).getName());
 					}
 				}

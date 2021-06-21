@@ -1,85 +1,79 @@
 package Gestoria;
 
 import Entidades.*;
+
 import java.util.ArrayList;
 
 //EL CONTEXTO
-public class Instanciador {
+public class Instanciador{
 
-	private StrategyInstanciador Instanciador;
+	private StrategyInstanciador instanciador;
 	
-	
-	private ArrayList<Room> Rooms = new ArrayList<Room>();
-	private ArrayList<Personaje> Personajes = new ArrayList<Personaje>();
-	private ArrayList<Objeto> Objetos =  new ArrayList<Objeto>();
-	
+	private ArrayList<Room> rooms = new ArrayList<Room>();
+	private ArrayList<Personaje> personajes = new ArrayList<Personaje>();
+	private ArrayList<Objeto> objetos =  new ArrayList<Objeto>();
 	
 	public void setPersonajes(ArrayList<Personaje> personajes) {
 		if(personajes != null) {
-			this.Personajes = personajes;
+			this.personajes = personajes;
 		}
 	}
 	
 	public void setObjetos(ArrayList<Objeto> objetos) {
 		if(objetos != null) {
-			this.Objetos = objetos;
+			this.objetos = objetos;
 		}
 	}
 	
 	public void setRooms(ArrayList<Room> room) {
 		if(room != null) {
-			this.Rooms = room;
+			this.rooms = room;
 		}
 	}
 
-	public void setStrategy(StrategyInstanciador Inst) {
-		Instanciador = Inst;
+	public void setStrategy(StrategyInstanciador instanciador) {
+		this.instanciador = instanciador;
 	}
 	
 	
+	//Getters del instanciador
 	public ArrayList<Room> Rooms() {
-		return Rooms != null ? Rooms : null;
+		return rooms != null ? rooms : null;
 	}
 
 	public ArrayList<Personaje> Personajes(){
-		return Personajes != null ? Personajes : null;
+		return personajes != null ? personajes : null;
 	}
 	
 	public ArrayList<Objeto> Objetos(){
-		return Objetos != null ? Objetos : null;
+		return objetos != null ? objetos : null;
 	}
-	
-	
 	
 	//Metodos Instanciador.
 	
 	public ArrayList<Room> getRooms() {
-		return Instanciador.getRooms();
+		return instanciador.getRooms();
 	}
 
 	public ArrayList<Personaje> getPersonajes(){
-		return Instanciador.getPersonajes();
+		return instanciador.getPersonajes();
 	}
 	
 	public ArrayList<Objeto> getObjetos(){
-		return Instanciador.getObjetos();
-	}
-	
-	public void roomsimpi() {
-
+		return instanciador.getObjetos();
 	}
 	
 	public void imprimir() {
 		
 		System.out.println("\n\nROOMS ");
-		for(Room x: Rooms) {
+		for(Room x: rooms) {
 			
 			System.out.println("NOMBRE:"+x.getName());
 		}
 		
 		
 		System.out.println("\n\nPERSONAJES ");
-		for(Personaje x: Personajes) {
+		for(Personaje x: personajes) {
 			System.out.println("NOMBRE:"+x.getName());
 			System.out.println("HAB:"+x.getRoom().getName());
 			System.out.print("OBJ:");
@@ -89,7 +83,7 @@ public class Instanciador {
 		
 		
 		System.out.println("\n\nOBJETOS ");
-		for(Objeto x : Objetos) {
+		for(Objeto x : objetos) {
 			System.out.println("NOMBRE:"+x.getName());
 			try {System.out.println("HAB:"+x.getRoom().getName());}catch(Exception e) {System.out.println("PERS:"+x.getPersonaje().getName());}
 		}
@@ -100,24 +94,25 @@ public class Instanciador {
 	    {
 	        for(int i = 0; objetoArray[i] != null; i++)
 	        {
-	            Objetos.add(objetoArray[i]);
+	            objetos.add(objetoArray[i]);
 	        }
 	    }
 
-	    public void toArrayListRoom(Room[] roomArray)
+	 public void toArrayListRoom(Room[] roomArray)
 	    {
 	        for(int i = 0; roomArray[i] != null; i++)
 	        {
-	            Rooms.add(roomArray[i]);
+	            rooms.add(roomArray[i]);
 	        }
 	    }
 
-	    public void toArrayListPersonaje(Personaje[] personajeArray)
+	 public void toArrayListPersonaje(Personaje[] personajeArray)
 	    {
 	        for(int i = 0; personajeArray[i] != null; i++)
 	        {
-	            Personajes.add(personajeArray[i]);
+	            personajes.add(personajeArray[i]);
 	        }
 	    }
+
 	
 }

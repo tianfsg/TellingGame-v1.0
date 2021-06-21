@@ -8,8 +8,8 @@ SmokeRoom(Cocina)
 <Personajes>
 Esther(Dormitorio)
 Maria(Garden)
-Sebas(SmokeRoom)
 Jorge(Comedor)
+Sebas(SmokeRoom)
 
 <Objetos>
 Joint(Sebas)
@@ -19,4 +19,4 @@ Cartera(Garden)
 Pan(Jorge)
 
 <Jugador>
-Jorge(Comedor)
+Sebas(SmokeRoom)

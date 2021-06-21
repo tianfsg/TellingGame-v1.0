@@ -1,6 +1,7 @@
 package Gestoria;
 
 import Entidades.*;
+import Exceptions.ExceptionFich;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,14 +11,14 @@ import java.util.Arrays;
 
 
 //LAS ESTRATEGIAS
-public class InstanciarRooms extends StrategyInstanciador{
+public class InstanciarRooms implements StrategyInstanciador{
 
 	private String[] lineas = new String[100];
 
 	private String[] localizaciones1D = new String[100];          //aqui se almacenan las localizaciones sin modificar
 	private String[][] localizaciones2D = new String[100][100];   //aqui se almacenan las localizaciones ya separadas (0: nombre hab. >0: adyacencias)
 
-	private Room[] Rooms = new Room[100];
+	private Room[] rooms = new Room[100];
 	private ArrayList<Room> listRoom = new ArrayList<Room>();
 
 	public InstanciarRooms(String path){
@@ -131,7 +132,7 @@ public class InstanciarRooms extends StrategyInstanciador{
 
 		for(int i = 0; localizaciones2D[i][0] != null; i++)
 		{
-			Rooms[i] = new Room(localizaciones2D[i][0]);
+			rooms[i] = new Room(localizaciones2D[i][0]);
 //			System.out.println(Rooms[i].getName() + " --> " + i);
 		}
 
@@ -144,8 +145,8 @@ public class InstanciarRooms extends StrategyInstanciador{
 		int i = 0, l = 0, j = 1;
 
 		while(localizaciones2D[i][j] != null) {
-			if(localizaciones2D[i][j].equals(Rooms[l].getName())) {
-				Rooms[i].addBesides(Rooms[l]);
+			if(localizaciones2D[i][j].equals(rooms[l].getName())) {
+				rooms[i].addBesides(rooms[l]);
 				j++;
 				l = 0;
 			} else {
@@ -160,8 +161,8 @@ public class InstanciarRooms extends StrategyInstanciador{
 		// TRANSFORMACION EN ARRAYLIST
 		//se recorre el array de habitaciones (objetos), y se añade cada objeto habitación al arraylist correspondiente.
 
-		for(int k = 0; Rooms[k] != null; k++){
-			listRoom.add(Rooms[k]);
+		for(int k = 0; rooms[k] != null; k++){
+			listRoom.add(rooms[k]);
 		}
 		//comprobar();
 	}

@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InstanciarFinalRoom extends StrategyInstanciador{
+public class InstanciarFinalRoom implements StrategyInstanciador{
 	
     private String[] lineas = new String[100];                    //aqui se almacenan las lineas del archivo sin modificar
 
@@ -18,7 +18,7 @@ public class InstanciarFinalRoom extends StrategyInstanciador{
     private String[][] localFinal2D = new String[100][100];      //aqui se almacenan las loc. obj. ya separadas (0: nombre personaje 1: nombre habitacion)
 
     private ArrayList<Room> habitaciones;
-    private ArrayList<Personaje> Personajes;
+    private ArrayList<Personaje> personaje;
 
     public InstanciarFinalRoom(String path, ArrayList<Personaje> arrayList, ArrayList<Room> arrayList2)
     {
@@ -29,22 +29,20 @@ public class InstanciarFinalRoom extends StrategyInstanciador{
     }
 
     public void setPersonajes(ArrayList<Personaje> personajes) {
-    	this.Personajes = personajes;
+    	this.personaje = personajes;
     }
     
     public void setRooms(ArrayList<Room> rooms) {
     	this.habitaciones = rooms;
     }
     
-    
     public ArrayList<Personaje> getPersonaje() {
-    	return Personajes;
+    	return personaje;
     }
     
     public ArrayList<Room>getRoom() {
     	return habitaciones;
     }
-    
     
     //Metodos
     
@@ -158,11 +156,11 @@ public class InstanciarFinalRoom extends StrategyInstanciador{
     public void instEntidades()
     {
         for (int i = 0; localFinal2D[i][1] != null; i++) {
-        	for (int j = 0; j < Personajes.size(); j++) {
-        		if (Personajes.get(j).getName().equals(localFinal2D[i][0]) && Personajes.get(j) != null) {
+        	for (int j = 0; j < personaje.size(); j++) {
+        		if (personaje.get(j).getName().equals(localFinal2D[i][0]) && personaje.get(j) != null) {
         			for (int k = 0; k < habitaciones.size(); k++) {
                     	if (habitaciones.get(k).getName().equals(localFinal2D[i][1]) && habitaciones.get(k) != null) {
-                    		Personajes.get(j).setFinalRoom(habitaciones.get(k));
+                    		personaje.get(j).setFinalRoom(habitaciones.get(k));
 //                            System.out.println(Personajes.get(j).getName() + " esta en: " + habitaciones.get(k).getName());
                         }
                     }
@@ -180,7 +178,7 @@ public class InstanciarFinalRoom extends StrategyInstanciador{
 	@Override
 	public ArrayList<Personaje> getPersonajes() {
 		// TODO Auto-generated method stub
-		return Personajes != null ? Personajes : null;
+		return personaje != null ? personaje : null;
 	}
 
 	@Override

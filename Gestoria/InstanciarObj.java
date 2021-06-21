@@ -7,17 +7,17 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class InstanciarObj extends StrategyInstanciador {
+public class InstanciarObj implements StrategyInstanciador {
 
 	private String[] lineas = new String[100];                  	//aqui se almacenan las lineas del archivo sin modificar
 
-	private String[] Objetos1D = new String[100];				 	//aqui se almacenan los Objetos sin modificar (Objetos de la partida, no Objetos de java)
-	private String[][] Objetos2D = new String[100][100];         	//aqui se almacenan los Objetos ya separados (0: nombre obj.  1: localizacion o personaje inicial)
+	private String[] objetos1D = new String[100];				 	//aqui se almacenan los Objetos sin modificar (Objetos de la partida, no Objetos de java)
+	private String[][] objetos2D = new String[100][100];         	//aqui se almacenan los Objetos ya separados (0: nombre obj.  1: localizacion o personaje inicial)
 
-	private Objeto[] Objetos = new Objeto[100];
+	private Objeto[] objetos = new Objeto[100];
 	
-	ArrayList<Personaje> Personajes; //Personajes[]
-	ArrayList<Room> Rooms;			//Rooms[]
+	ArrayList<Personaje> personajes; //Personajes[]
+	ArrayList<Room> rooms;			//Rooms[]
 	private ArrayList<Objeto> listObj = new ArrayList<Objeto>();
 
 	public InstanciarObj(String path, ArrayList<Room> allRooms, ArrayList<Personaje> allPersonajes) {
@@ -29,13 +29,13 @@ public class InstanciarObj extends StrategyInstanciador {
 
 	public void setRooms(ArrayList<Room> rooms) {
 		if(rooms != null) {
-			this.Rooms = rooms;	
+			this.rooms = rooms;	
 		}
 	}
 	
 	public void setPersonaje(ArrayList<Personaje> personajes) {
 		if(personajes != null) {
-			this.Personajes = personajes;	
+			this.personajes = personajes;	
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class InstanciarObj extends StrategyInstanciador {
 				i++;
 				for(int j = 0; lineas[i].equals("<Jugador>") == false; j++)
 				{
-					Objetos1D[j] = lineas[i];
+					objetos1D[j] = lineas[i];
 					i++;
 				}
 			}
@@ -130,21 +130,21 @@ public class InstanciarObj extends StrategyInstanciador {
 
 		String[] splits = new String[100]; //array "temporal" que almacenara las adyacencias por separado.
 
-		for(int i = 0; Objetos1D[i] != null; i++)
+		for(int i = 0; objetos1D[i] != null; i++)
 		{
-			Objetos1D[i] = Objetos1D[i].replace(")", "");
-			Objetos1D[i] = Objetos1D[i].replace("(", ",");
+			objetos1D[i] = objetos1D[i].replace(")", "");
+			objetos1D[i] = objetos1D[i].replace("(", ",");
 		}
 
 
-		for(int i = 0; Objetos1D[i] != null; i++)
+		for(int i = 0; objetos1D[i] != null; i++)
 		{
 			Arrays.fill(splits, null); //rellena el array temporal con null en cada iteracion, para evitar datos residuales
-			splits = Objetos1D[i].split(","); //realiza el split separando por ","
+			splits = objetos1D[i].split(","); //realiza el split separando por ","
 
 			for(int j = 0; j < splits.length; j++)
 			{
-				Objetos2D[i][j] = splits[j]; //asignas las localizaciones o personajes a la segunda dimension
+				objetos2D[i][j] = splits[j]; //asignas las localizaciones o personajes a la segunda dimension
 			}
 		}
 	}
@@ -155,13 +155,13 @@ public class InstanciarObj extends StrategyInstanciador {
 //		System.out.println(" ");
 //		System.out.println("INSTANCIANDO Objetos ASOCIADOS A LOCALIZACIONES");
 
-		for(int i = 0; Objetos2D[i][0] != null; i++)
+		for(int i = 0; objetos2D[i][0] != null; i++)
 		{	
-			for(int j = 0; j < Rooms.size() ; j++)
+			for(int j = 0; j < rooms.size() ; j++)
 			{	
-				if(Rooms.get(j).getName().equals(Objetos2D[i][1])) { //si el nombre de la habitacion (objeto) y el de la habitacion inicial del objeto (string) son iguales, se instancia
+				if(rooms.get(j).getName().equals(objetos2D[i][1])) { //si el nombre de la habitacion (objeto) y el de la habitacion inicial del objeto (string) son iguales, se instancia
 //					System.out.println(i + " --- " + Objetos2D[i][0] + " --> " + Rooms.get(j).getName());
-					Objetos[i] = new Objeto(Objetos2D[i][0], Rooms.get(j));
+					objetos[i] = new Objeto(objetos2D[i][0], rooms.get(j));
 				}
 			}
 		}
@@ -170,18 +170,18 @@ public class InstanciarObj extends StrategyInstanciador {
 
 		//esta parte del codigo en especifico es mas rentable
 		int i = 0;
-		while(Objetos[i] != null) {
+		while(objetos[i] != null) {
 			i++;
 		}
 		//int j = 0;
 //		System.out.println(" ");
 //		System.out.println("INSTANCIANDO Objetos ASOCIADOS A PERSONAJES");
-		while (Objetos2D[i][0] != null) { //recorre el contenido del array de Objetos (indice 0 = nombre) (STRING)
-			for(int j = 0; j < Personajes.size(); j++)
+		while (objetos2D[i][0] != null) { //recorre el contenido del array de Objetos (indice 0 = nombre) (STRING)
+			for(int j = 0; j < personajes.size(); j++)
 			{
-				if(Personajes.get(j).getName().equals(Objetos2D[i][1])) { //si el nombre de la habitacion (objeto) y el del personaje (string) son iguales, se instancia
+				if(personajes.get(j).getName().equals(objetos2D[i][1])) { //si el nombre de la habitacion (objeto) y el del personaje (string) son iguales, se instancia
 //					System.out.println(i + " --- " + Objetos2D[i][0] + " --> " + Personajes.get(j).getName());
-					Objetos[i] = new Objeto(Objetos2D[i][0], Personajes.get(j));
+					objetos[i] = new Objeto(objetos2D[i][0], personajes.get(j));
 				}
 			}
 			i++;
@@ -192,9 +192,9 @@ public class InstanciarObj extends StrategyInstanciador {
 
 		//se recorre el array de Objetos ("Objetos"), y se aNade cada objeto objeto al arraylist correspondiente.
 
-		for(int k = 0; Objetos[k] != null; k++)
+		for(int k = 0; objetos[k] != null; k++)
 		{
-			listObj.add(Objetos[k]);
+			listObj.add(objetos[k]);
 //			System.out.println("ANADIDO: " + listObj.get(k).getName());
 		}
 		

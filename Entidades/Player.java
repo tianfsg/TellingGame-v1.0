@@ -15,4 +15,5 @@ public class Player extends Personaje {
 		return false;
 	}
 
+
 }

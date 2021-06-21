@@ -1,31 +1,37 @@
 package Entidades;
 
-public abstract class Personaje {
+import java.util.ArrayList;
 
-	protected String Name = null;	
-	protected Objeto Obj = null, final_Obj = null;
-	protected Room Room = null, final_Room = null;
+public abstract class Personaje{
+
+	
+	protected String name = null;	
+	protected Objeto obj = null, final_Obj = null;
+	protected Room room = null, final_Room = null;
 
 	protected boolean estadoTurno = false;
 	protected boolean IA = true;
+	
+	protected ArrayList<String> believes;
 	
 	//Constructor
 	public Personaje(String name, Room room) {
 		setName(name);
 		setRoom(room);
+		believes = new ArrayList<String>();
 	}
 	
 	//Default getters
 	public String getName() {
-		return Name != null ? Name : null;
+		return name != null ? name : null;
 	}
 	
 	public Room getRoom() {
-		return Room != null ? Room : null;
+		return room != null ? room : null;
 	}
 	
 	public Objeto getObj() {
-		return Obj != null ? Obj : null;
+		return obj != null ? obj : null;
 	}
 	
 	public Room getFinalRoom() {
@@ -40,18 +46,32 @@ public abstract class Personaje {
 		return estadoTurno;
 	}
 	
+	public ArrayList<String> getBelieves(){
+		return believes;
+	}
+	
+	public void lastBelieves() {
+		int num_believes = believes.size();
+		if(num_believes > 0) {
+			System.out.println(believes.get(num_believes));
+		}
+	}
+	
 	public boolean finalRoom() {
-		return Room.getName() == final_Room.getName() ? true : false;
+		return room.getName() == final_Room.getName() ? true : false;
 	}
 	
 	public boolean finalObj() {
 		if(getFinalObj() != null && getObj() != null) {
 			return getObj().getName() == getFinalObj().getName() ? true : false;
+		
 		}else if (getFinalObj() != null && getObj() == null){
 			return false;
+		
 		}else if (getFinalObj() == null){
 			return true;
 		}
+		
 		return false;
 	}
 	
@@ -64,36 +84,31 @@ public abstract class Personaje {
 	//Default setters
 	
 	public void setName(String name) {
-		this.Name = name;
+		this.name = name;
 	}
 	
 	public void setRoom(Room room) {
-		if(Room != null) {
-			Room.removePersonaje(this);
-			this.Room = room;
-			Room.addPersonaje(this);	
+		if(this.room != null) {
+			this.room.removePersonaje(this);
+			this.room = room;
+			this.room.addPersonaje(this);	
 		}else {
-			this.Room = room;
-			Room.addPersonaje(this);
+			this.room = room;
+			this.room.addPersonaje(this);
 		}
 	}
 	
 	public void setObj(Objeto obj) {
-		if(hasObj()) {
-			System.out.println("Has soltado " + Obj.getName() + ".");
-			Obj.setRoom(Room);
-			setObj(obj);
+		if(!hasObj()) {
+			this.obj = obj;
 		}else {
-			Obj = obj;	
+			this.dropObj();
+			obj.setPersonaje(this);
 		}
 	}
 	
 	public void removeObj() {
-		if(hasObj()) {
-			this.Obj = null;
-		}else {
-			System.out.println("No tienes un objeto...");
-		}
+		this.obj = null;
 	}
 	
 	public void setFinalRoom(Room room) {
@@ -109,36 +124,37 @@ public abstract class Personaje {
 		return estadoTurno;
 	}
 	
+	public void setPBelieve(Room room, Personaje x) {
+		believes.add("Creo que " + x.getName() + " en " + room.getName());
+	}
+	
+	public void setOBelive(Room room, Objeto o) {
+		believes.add("Creo que " + o.getName() + " en " + room.getName());
+	}
+	
 	//PersonajeMethods()
 	
-	public abstract int chooseIA(int options);
-	
 	public boolean hasObj() {
-		return Obj != null ? true : false;
+		return obj != null ? true : false;
 	}
 	
 	public void dropObj() {
 		if(hasObj()) {
-			Obj.setRoom(Room);	
+			obj.setRoom(room);	
 		}
 	}
 
 	public void giveObj(Personaje personaje) {
-		if(hasObj()) {
-			if(personaje.hasObj()) {
-				personaje.getObj().setRoom(personaje.getRoom());
-				this.Obj.setPersonaje(personaje);
-				this.removeObj();
-			}else {
-				this.Obj.setPersonaje(personaje);
-				this.removeObj();
-			}
+		if(hasObj()){
+			getObj().setPersonaje(personaje);
 		}
 	}
 	
 	public void moveRoom(Room room) {
-		Room.removePersonaje(this);
+		room.removePersonaje(this);
 		setRoom(room);
 	}
+	
+	public abstract int chooseIA(int options);
 	
 }

@@ -1,5 +1,6 @@
 package Entidades;
 
+
 public class IA extends Personaje {
 
 	public IA(String name, Room room) {
@@ -8,13 +9,11 @@ public class IA extends Personaje {
 	}
 
 	public int chooseIA(int options){
-		int option = (int) (Math.random() * options) + 1;
-		return option;
+		return (int) (Math.random() * options) + 1;
 	}
 
 	@Override
 	public boolean getIA() {
 		return true;
 	}
-	
 }

@@ -53,14 +53,14 @@ public class Room {
     //Adding or removing Obj
  
     public void addObj(Objeto obj) {
-    	if(listObj.contains(obj) == false) {
+    	if(!listObj.contains(obj)) {
     		listObj.add(obj);
     	}
     }
     
     public void removeObj(Objeto obj) {
-    	if( listObj.contains(obj) ) {
-    		listObj.remove( listObj.indexOf(obj) );
+    	if(listObj.contains(obj)) {
+    		listObj.remove(obj);
     	}
     }
     
@@ -69,61 +69,67 @@ public class Room {
     public void listAnexos() {
     	for(int i = 0; i < listAnexos.size(); i++) {
     		if(listAnexos.get(i) != null) {
-    			System.out.println((i+1) + ". " + listAnexos.get(i).getName() + "\n");		
+    			System.out.print((i+1) + ". " + listAnexos.get(i).getName() + " ");		
     		}
     	}
+    	System.out.println();
     }
     
     public void listObj() {
     	for(int i = 0; i < listObj.size(); i++) {
     		if(listObj.get(i) != null) {
-    			System.out.println((i+1) + ". " + listObj.get(i).getName() + "\n");		
+    			System.out.print((i+1) + ". " + listObj.get(i).getName() + " ");		
     		}
     	}
+    	System.out.println();
     }
     
     public void listPersonajes() {
     	for(int i = 0; i < listPersonajes.size(); i++) {
     		if(listPersonajes.get(i) != null) {
-    			System.out.println((i+1) + ". " + listPersonajes.get(i).getName() + "\n");
+    			System.out.print((i+1) + ". " + listPersonajes.get(i).getName() + " ");
     		}
     	}
+    	System.out.println();
     }
     
-    public int listarPreguntados(Personaje Jugador) {
-        int indiceJugador = listPersonajes.indexOf(Jugador);
+    public int listarPreguntados(Personaje jugador) {
+    	
+        int indiceJugador = listPersonajes.indexOf(jugador);
         
         if(indiceJugador == 0) {
             for(int i = 1; i < listPersonajes.size(); i++) {
-                   System.out.println((i) + ". " + listPersonajes.get(i).getName() + " \n");
+                   System.out.print((i) + ". " + listPersonajes.get(i).getName() + " ");
             }
+            System.out.println("");
             return 0;
         }else if(indiceJugador == 1) {
             for(int i = 0; i < listPersonajes.size(); i++) {
-                if(Jugador.getName() != listPersonajes.get(i).getName()) {
+                if(jugador.getName() != listPersonajes.get(i).getName()) {
                    if(i > indiceJugador) {
-                        System.out.println((i) + ". " + listPersonajes.get(i).getName() + "\n ");    
+                        System.out.print((i) + ". " + listPersonajes.get(i).getName() + " ");    
                     }else {
-                        System.out.println((i+1) + ". " + listPersonajes.get(i).getName() + "\n ");
+                        System.out.print((i+1) + ". " + listPersonajes.get(i).getName() + " ");
                     }
                 }
             }
+            System.out.println("");
             return 1;
+            
         }else if(indiceJugador > 1) {
             for(int i = 0; i < listPersonajes.size(); i++) {
-                if(Jugador.getName() != listPersonajes.get(i).getName()) {
+                if(jugador.getName() != listPersonajes.get(i).getName()) {
                 	if(i > indiceJugador) {
-                        System.out.println((i) + ". " + listPersonajes.get(i).getName() + "\n ");    
+                        System.out.print((i) + ". " + listPersonajes.get(i).getName() + " ");    
                     }else {
-                        System.out.println((i+1) + ". " + listPersonajes.get(i).getName() + "\n ");
+                        System.out.print((i+1) + ". " + listPersonajes.get(i).getName() + " ");
                     }    
                 }
             }
+            System.out.println("");
             return 2;
         }
         return indiceJugador;
     }
-    
-    
     
 }

@@ -1,22 +1,13 @@
-<Localizaciones>
-Garden(Comedor, Dormitorio)
-Comedor(Garden, Cocina, Dormitorio)
-Cocina(Comedor, SmokeRoom)
-Dormitorio(Comedor, Garden)
-SmokeRoom(Cocina)
 
 <Localizacion Personajes>
 Esther(Dormitorio)
 Maria(Garden)
+Jorge(Garden)
 Sebas(SmokeRoom)
-Jorge(Comedor)
 
 <Posesion Objetos>
 Joint(Maria)
 Llave(Jorge)
-Ordenador(Comedor)
+Ordenador(Esther)
 Cartera(Garden)
 Pan(Sebas)
-
-<Jugador>
-Jorge(SmokeRoom)
