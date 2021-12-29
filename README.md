@@ -1,1 +1,1 @@
-# TellingGame-BETA
+# TellingGame
