@@ -8,6 +8,6 @@ En este proyecto se diseñó y se implemento un planificador narrativo en el que
 
 El equipo de desarrollo estuvo integrado por:
 
-Sebastián Fco. Gutiérrez Rojas
+Sebastián Fco. Gutiérrez Rojas y 
 Jorge Martínez Hurtado
 Es importante destacar que en este proyecto no se utilizó ningún tipo de IA,la IA que implementamos es una logica sencilla para los personajes controlados por la maquina.
